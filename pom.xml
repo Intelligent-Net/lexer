@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>uk.co.inet</groupId>
+	<artifactId>lexer</artifactId>
+	<packaging>jar</packaging>
+	<version>0.5</version>
+
+	<name>lexer</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+          <maven.compiler.source>1.8</maven.compiler.source>
+          <maven.compiler.target>1.8</maven.compiler.target>
+          <!-- package a Jar file with all dependencies in it. This
+               configures the manifest's main class for that jar file. -->
+		<main.class>uk.co.inet.lexer.Text</main.class>
+		<antlr.version>4.6</antlr.version>
+	</properties>
+
+	<dependencies>
+		<dependency> <!-- Antlr 4 runtime (http://mvnrepository.com/artifact/org.antlr/antlr4-runtime) -->
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4-runtime</artifactId>
+			<version>${antlr.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+                <!--
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+		  <version>1.7.13</version>
+                  <scope>compile</scope>
+                </dependency>
+
+                <dependency>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-slf4j-impl</artifactId>
+                  <version>2.5</version>
+                  <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-core</artifactId>
+                  <version>2.5</version>
+                  <scope>runtime</scope>
+                </dependency>
+                -->
+
+                <dependency>
+                  <groupId>org.apache.commons</groupId>
+                  <artifactId>commons-collections4</artifactId>
+                  <version>4.1</version>
+                </dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.10.2</version>
+		</dependency>
+
+                <!--
+                <dependency>
+                  <groupId>org.apache.pdfbox</groupId>
+                  <artifactId>pdfbox</artifactId>
+                  <version>2.0.5</version>
+                </dependency>
+                -->
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin> <!-- Deals with the generation of the Antlr classes (http://mvnrepository.com/artifact/org.antlr/antlr4-maven-plugin) -->
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>${antlr.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+						<configuration>
+							<listener>false</listener>
+							<visitor>true</visitor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- 
+			This clean plugin configuration just cleans the target/generated-sources 
+			directory. Any stale .tokens files will always be cleaned regardless 
+			other whether a "clean" is executed on the command line 
+			-->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>clean-antlr4-generated-sources</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>target/generated-sources</directory>
+								</fileset>
+							</filesets>
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+     <plugin>
+       <artifactId>maven-assembly-plugin</artifactId>
+       <version>2.6</version>
+       <configuration>
+         <descriptorRefs>
+           <descriptorRef>jar-with-dependencies</descriptorRef>
+         </descriptorRefs>
+       </configuration>
+       <executions>
+         <execution>
+           <id>make-assembly</id> <!-- this is used for inheritance merges -->
+           <phase>package</phase> <!-- bind to the packaging phase -->
+           <goals>
+             <goal>single</goal>
+           </goals>
+         </execution>
+       </executions>
+     </plugin>
+                 </plugins>
+          </build>
+
+</project>
